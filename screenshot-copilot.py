@@ -18,6 +18,7 @@ class Start_Screen:
         #make a small popup that gets the name and ufid and then sends to a txt file in a new folder that creates 2 empty folders one 
         #for good clicks and one for red clicks
         root.title("Name UFID")
+        #test
         #entry widget here
         # make sure to validate here, tehre is a validate command configurarion option
         
