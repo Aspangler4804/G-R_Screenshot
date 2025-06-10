@@ -7,16 +7,20 @@ from PIL import Image
 import time
 from datetime import datetime
 
-
+######################################
+# Maximum of 1 screenshot per second
+#####################################
 
 #create virtual environment?
+#subprocess for auto installing?
 
 class Start_Screen:
+
     #Small popup to start timer/ initialize files
     def __init__(self, root):
         #save root for later
         self.root = root
-        
+
         #Init temp frame and button/label
         self.tempPage = ttk.Frame(root, width = 200)
         self.tempPage.grid(column = 0, row = 0)
@@ -26,16 +30,11 @@ class Start_Screen:
         #Init files
         self.initFiles()
 
-    #fix the time
-    #make ti so that replaying doesnt override etc
-    #chcek later for os compantiablitly
-    #now test adding picutes/what is the cmd
         
     def initFiles(self):
-        
+        #Create files with the time right now
         cur_date = datetime.now()
         formatted_date = cur_date.strftime("%m-%d--%H-%M-%S")
-
 
         #Get user directory, change cwd to scripts dir
         script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -47,6 +46,7 @@ class Start_Screen:
         os.path.normcase(self.project_dir)
         print(cwd)
         
+        #If alrdy has project dir, dont make again
         if os.path.isdir(self.project_dir):
             pass
         else:
@@ -55,7 +55,7 @@ class Start_Screen:
         # should have normacased the cwd+ '/' , research project??
 
         
-        #normalize for os
+        #Build seperate folders for red/green click
         self.g_dir = os.path.join(self.project_dir, 'green_click('+str(formatted_date)+')')
         self.r_dir = os.path.join(self.project_dir, 'red_click('+str(formatted_date)+')')
         os.mkdir(os.path.normcase(self.g_dir))
@@ -63,23 +63,27 @@ class Start_Screen:
 
     
 
-
-
     def validate(self, name, ufid):
+        #Not in use right now. 
         try:
             print("Better be valid id and name")
             self.success
         except:
             print("fail!!HAHAHA")
 
+
     def success(self):        
+        #Start the main program
         self.tempPage.destroy()
         File_Buttons(self.root, self.project_dir, self.g_dir, self.r_dir)
 
+
+
 class File_Buttons:
-    #can I initialize where this screen is intitially placed?
+    
     def __init__(self, root, cwd, g_d, r_d):
         #initialize root, and style for main
+        self.root = root
         root.title("Copilot Use") 
         root.rowconfigure(0, weight =1)
         root.columnconfigure(0, weight =1)       
@@ -123,15 +127,14 @@ class File_Buttons:
 
 
     def exit_click(self):
-        #pause timer, open a window to double check
-        #timer.pause
+        
         try:
-            
+            #Build a small screen to verify exit
             final_check = Toplevel(self.mainframe, bg = 'white')
             final_check.grid()
+
+            #focus screen, display options
             final_check.grab_set()
-            #focus screen
-            #make questions appear
             VF = ttk.Button(final_check, text = "Yes I am finished", command = self.kill_program)
             VF.grid(row = 0, column = 0)
             NF = ttk.Button(final_check, text = "I am not finished", command = lambda:self.revert(VF, NF, final_check))
@@ -142,31 +145,28 @@ class File_Buttons:
 
     def green_click(self):
         try:
-            #add the amount of time into the assignment student ist o the screenshotnaem
-
-
-            #currently logs only in seconds, will override if spam the green button
             im = pyautogui.screenshot()
             cur_time = time.time()
             print(cur_time - self.start_time)
             im.save(os.path.normcase(os.path.join(self.g_d, "G_C_"+ str(int(cur_time - self.start_time))+ ".jpg")))
-            
-            print("Green Click")
-        except KeyError:
+        except FileNotFoundError:
+            print("Please delete the research folder and try again")
             pass
 
 
     def red_click(self):
         
         try:
-            print("Red click")
-        except KeyError:
-            #change this to an appropriate error
+            im = pyautogui.screenshot()
+            cur_time = time.time()
+            im.save(os.path.normcase(os.path.join(self.r_d, "R_C_"+ str(int(cur_time - self.start_time))+ ".jpg")))
+        except FileNotFoundError:
+            print("Please delete the research folder and try again")
             pass
     
     def kill_program(self):
         try:
-            print("Saving files")
+            self.root.destroy()
         except KeyboardInterrupt:
             pass
 
