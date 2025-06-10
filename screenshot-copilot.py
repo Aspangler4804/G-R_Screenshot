@@ -1,41 +1,84 @@
-#need to check for version/os compatibility
 import pyautogui
+import os
+#import time
 from tkinter import *
 from tkinter import ttk
 from PIL import Image
+import time
+from datetime import datetime
 
-#To do:
-    #make the start screen, shouldnt be too hard
-    #make file system
-    #send photos to files
 
-    #if have time, some sort of exporting functionality
 
+#create virtual environment?
 
 class Start_Screen:
+    #Small popup to start timer/ initialize files
     def __init__(self, root):
-        self.tempPage = ttk.Frame(root, )
-        #make a small popup that gets the name and ufid and then sends to a txt file in a new folder that creates 2 empty folders one 
-        #for good clicks and one for red clicks
-        root.title("Name UFID")
-        #test
-        #entry widget here
-        # make sure to validate here, tehre is a validate command configurarion option
+        #save root for later
+        self.root = root
         
+        #Init temp frame and button/label
+        self.tempPage = ttk.Frame(root, width = 200)
+        self.tempPage.grid(column = 0, row = 0)
+        ttk.Button(self.tempPage, text= "START", command = self.success).grid(column = 0, row = 0)
+        ttk.Label(self.tempPage, text = "Click start to begin the assignment").grid(column = 0, row = 1)
+        
+        #Init files
+        self.initFiles()
+
+    #fix the time
+    #make ti so that replaying doesnt override etc
+    #chcek later for os compantiablitly
+    #now test adding picutes/what is the cmd
+        
+    def initFiles(self):
+        
+        cur_date = datetime.now()
+        formatted_date = cur_date.strftime("%m-%d--%H-%M-%S")
+
+
+        #Get user directory, change cwd to scripts dir
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        cwd = os.chdir(script_dir)
+        cwd = os.getcwd()
+
+
+        self.project_dir = os.path.join(cwd + '\\', 'Research_Project')
+        os.path.normcase(self.project_dir)
+        print(cwd)
+        
+        if os.path.isdir(self.project_dir):
+            pass
+        else:
+            os.mkdir(self.project_dir)
+        
+        # should have normacased the cwd+ '/' , research project??
+
+        
+        #normalize for os
+        self.g_dir = os.path.join(self.project_dir, 'green_click('+str(formatted_date)+')')
+        self.r_dir = os.path.join(self.project_dir, 'red_click('+str(formatted_date)+')')
+        os.mkdir(os.path.normcase(self.g_dir))
+        os.mkdir(os.path.normcase(self.r_dir))
+
+    
+
+
 
     def validate(self, name, ufid):
         try:
             print("Better be valid id and name")
             self.success
         except:
-            print("fail!!")
+            print("fail!!HAHAHA")
 
-    def success(self):
+    def success(self):        
         self.tempPage.destroy()
-        File_Buttons(self.root)
+        File_Buttons(self.root, self.project_dir, self.g_dir, self.r_dir)
 
 class File_Buttons:
-    def __init__(self, root):
+    #can I initialize where this screen is intitially placed?
+    def __init__(self, root, cwd, g_d, r_d):
         #initialize root, and style for main
         root.title("Copilot Use") 
         root.rowconfigure(0, weight =1)
@@ -70,6 +113,15 @@ class File_Buttons:
         eB.grid(column = 3, row = 0, sticky = "NSEW")
         #eB.bind('<Double-1>', self.exit_click)
 
+        #make the cwd accessible
+        self.cwd = cwd
+        self.g_d = g_d
+        self.r_d = r_d
+
+        #Start timer
+        self.start_time = time.time()
+
+
     def exit_click(self):
         #pause timer, open a window to double check
         #timer.pause
@@ -90,6 +142,14 @@ class File_Buttons:
 
     def green_click(self):
         try:
+            #add the amount of time into the assignment student ist o the screenshotnaem
+
+
+            #currently logs only in seconds, will override if spam the green button
+            im = pyautogui.screenshot()
+            cur_time = time.time()
+            print(cur_time - self.start_time)
+            im.save(os.path.normcase(os.path.join(self.g_d, "G_C_"+ str(int(cur_time - self.start_time))+ ".jpg")))
             
             print("Green Click")
         except KeyError:
