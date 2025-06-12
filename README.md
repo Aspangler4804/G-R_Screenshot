@@ -10,7 +10,7 @@ New attempts will create new green or red folders upon each start up, formatted 
 1. Python
 2. Required Libraries
    - pip install pyautogui
-   - pip install tkinter
+   - pip install tk
    - pip install pillow
 3. Run the script to start
    
