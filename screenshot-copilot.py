@@ -11,8 +11,14 @@ from datetime import datetime
 # Maximum of 1 screenshot per second
 #####################################
 
-#create virtual environment?
-#subprocess for auto installing?
+
+#Make sure stays on top of screen
+#and fix file name
+#get rid of decision button
+#turn into binary
+#add a -requirements
+#well if a binary I guess not?
+
 
 class Start_Screen:
 
