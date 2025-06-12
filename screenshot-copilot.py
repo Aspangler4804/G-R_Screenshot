@@ -42,9 +42,9 @@ class Start_Screen:
         cwd = os.getcwd()
 
 
-        self.project_dir = os.path.join(cwd + '\\', 'Research_Project')
+        self.project_dir = os.path.join(cwd, 'Research_Project')
         os.path.normcase(self.project_dir)
-        print(cwd)
+        #print(cwd)
         
         #If alrdy has project dir, dont make again
         if os.path.isdir(self.project_dir):
@@ -147,7 +147,7 @@ class File_Buttons:
         try:
             im = pyautogui.screenshot()
             cur_time = time.time()
-            print(cur_time - self.start_time)
+            #print(cur_time - self.start_time)
             im.save(os.path.normcase(os.path.join(self.g_d, "G_C_"+ str(int(cur_time - self.start_time))+ ".jpg")))
         except FileNotFoundError:
             print("Please delete the research folder and try again")

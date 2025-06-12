@@ -1,23 +1,39 @@
-#test out ttk
+# #test out ttk
 
-#part of standard libray, but use $ brew install python-tk if not in
+# #part of standard libray, but use $ brew install python-tk if not in
 
-import tkinter as tk
+# import tkinter as tk
 
-root = tk.Tk()
-root.title("Simple")
+# root = tk.Tk()
+# root.title("Simple")
 
-def on_click():
-    lbl.config(text="ButtonClick")
-
-
-frame  = tk.Frame(root)
-frame.grid(row=0, column=0)
-
-lbl = tk.Label(root, text="Label 1").grid(row = 0, column =0)
-btn = tk.Button(root, text="Button 1", command =on_click).grid(row = 0, column = 1)
-#root is parent window
+# def on_click():
+#     lbl.config(text="ButtonClick")
 
 
+# frame  = tk.Frame(root)
+# frame.grid(row=0, column=0)
 
-root.mainloop()
+# lbl = tk.Label(root, text="Label 1").grid(row = 0, column =0)
+# btn = tk.Button(root, text="Button 1", command =on_click).grid(row = 0, column = 1)
+# #root is parent window
+
+
+
+# root.mainloop()
+import subprocess
+import sys
+
+def main():
+    print("hello")
+    try:
+        import pyautogui
+    except ImportError:
+       # sys.
+    result = subprocess.run(['pip', 'install', 'pyautogui'])
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
+
