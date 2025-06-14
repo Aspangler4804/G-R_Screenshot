@@ -12,6 +12,11 @@ from datetime import datetime
 #####################################
 
 
+#Possibly refactor to C++ 
+#actually lets do this 
+
+
+
 #Make sure stays on top of screen
 #and fix file name
 #get rid of decision button
@@ -23,8 +28,9 @@ from datetime import datetime
 class Start_Screen:
 
     #Small popup to start timer/ initialize files
-    def __init__(self, root):
+    def __init__(self):
         #save root for later
+        root = Tk()
         self.root = root
 
         #Init temp frame and button/label
@@ -35,6 +41,7 @@ class Start_Screen:
         
         #Init files
         self.initFiles()
+        root.mainloop()
 
         
     def initFiles(self):
@@ -154,7 +161,11 @@ class File_Buttons:
             im = pyautogui.screenshot()
             cur_time = time.time()
             #print(cur_time - self.start_time)
+            #saving as .jpg vs .png- just text changing- why does this change the actual file type??
             im.save(os.path.normcase(os.path.join(self.g_d, "G_C_"+ str(int(cur_time - self.start_time))+ ".jpg")))
+            #wihtout jpg didnt owrk
+            #png 
+            #change get rid of .jpg ? not owrking on mac
         except FileNotFoundError:
             print("Please delete the research folder and try again")
             pass
@@ -165,7 +176,8 @@ class File_Buttons:
         try:
             im = pyautogui.screenshot()
             cur_time = time.time()
-            im.save(os.path.normcase(os.path.join(self.r_d, "R_C_"+ str(int(cur_time - self.start_time))+ ".jpg")))
+            im.save(os.path.normcase(os.path.join(self.r_d, "R_C_"+ str(int(cur_time - self.start_time))+ ".png")))
+            #just do png if cant figure out how to do jpg transfer on mac
         except FileNotFoundError:
             print("Please delete the research folder and try again")
             pass
@@ -184,9 +196,9 @@ class File_Buttons:
 
 
 def main():  
-    root = Tk()
-    Start_Screen(root) 
-    root.mainloop()
+    
+    Start_Screen() 
+    
     
 
 
