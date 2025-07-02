@@ -1,6 +1,5 @@
 import pyautogui
 import os
-#import time
 from tkinter import *
 from tkinter import ttk
 from PIL import Image
@@ -10,19 +9,8 @@ from datetime import datetime
 ######################################
 # Maximum of 1 screenshot per second
 #####################################
-
-
-#Possibly refactor to C++ 
-#actually lets do this 
-
-
-
-#Make sure stays on top of screen
-#and fix file name
-#get rid of decision button
-#turn into binary
-#add a -requirements
-#well if a binary I guess not?
+# The executable and internal folder need to be zipped together before being distributed
+#####################################
 
 
 class Start_Screen:
@@ -32,7 +20,7 @@ class Start_Screen:
         #save root for later
         root = Tk()
         self.root = root
-
+        root.wm_attributes("-topmost", 1)
         #Init temp frame and button/label
         self.tempPage = ttk.Frame(root, width = 200)
         self.tempPage.grid(column = 0, row = 0)
@@ -47,7 +35,9 @@ class Start_Screen:
     def initFiles(self):
         #Create files with the time right now
         cur_date = datetime.now()
-        formatted_date = cur_date.strftime("%m-%d--%H-%M-%S")
+        
+
+        formatted_date = cur_date.strftime("%b%d-%I-%M")
 
         #Get user directory, change cwd to scripts dir
         script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -59,13 +49,13 @@ class Start_Screen:
         os.path.normcase(self.project_dir)
         #print(cwd)
         
+        print(self.project_dir)
+
         #If alrdy has project dir, dont make again
         if os.path.isdir(self.project_dir):
             pass
         else:
             os.mkdir(self.project_dir)
-        
-        # should have normacased the cwd+ '/' , research project??
 
         
         #Build seperate folders for red/green click
@@ -73,16 +63,7 @@ class Start_Screen:
         self.r_dir = os.path.join(self.project_dir, 'red_click('+str(formatted_date)+')')
         os.mkdir(os.path.normcase(self.g_dir))
         os.mkdir(os.path.normcase(self.r_dir))
-
-    
-
-    def validate(self, name, ufid):
-        #Not in use right now. 
-        try:
-            print("Better be valid id and name")
-            self.success
-        except:
-            print("fail!!HAHAHA")
+        #os.mkdir(self.r_dir)
 
 
     def success(self):        
@@ -97,6 +78,7 @@ class File_Buttons:
     def __init__(self, root, cwd, g_d, r_d):
         #initialize root, and style for main
         self.root = root
+
         root.title("Copilot Use") 
         root.rowconfigure(0, weight =1)
         root.columnconfigure(0, weight =1)       
@@ -126,8 +108,8 @@ class File_Buttons:
         Style.configure('E.TButton', font = ('calibri', 10, 'bold', 'underline'), background = 'black', foreground = 'white')
         ttk.Button(self.mainframe, text = "Green Button", command = self.green_click, width = 50, style = 'G.TButton', takefocus = False).grid(column = 0, columnspan = 2, row = 0, sticky = "NSEW")
         ttk.Button(self.mainframe, text = "Red Button", command = self.red_click, width = 50, style = 'R.TButton', takefocus = False).grid(column = 5, columnspan = 2, row = 0, sticky = "NSEW")
-        eB = ttk.Button(self.mainframe, text = "Click when finished", command = self.exit_click, width = 25, style = 'E.TButton', takefocus = False)
-        eB.grid(column = 3, row = 0, sticky = "NSEW")
+        # eB = ttk.Button(self.mainframe, text = "Click when finished", command = self.exit_click, width = 25, style = 'E.TButton', takefocus = False)
+        # eB.grid(column = 3, row = 0, sticky = "NSEW")
         #eB.bind('<Double-1>', self.exit_click)
 
         #make the cwd accessible
@@ -145,7 +127,7 @@ class File_Buttons:
             #Build a small screen to verify exit
             final_check = Toplevel(self.mainframe, bg = 'white')
             final_check.grid()
-
+            final_check.wm_attributes("-topmost", 1)
             #focus screen, display options
             final_check.grab_set()
             VF = ttk.Button(final_check, text = "Yes I am finished", command = self.kill_program)
@@ -161,11 +143,7 @@ class File_Buttons:
             im = pyautogui.screenshot()
             cur_time = time.time()
             #print(cur_time - self.start_time)
-            #saving as .jpg vs .png- just text changing- why does this change the actual file type??
-            im.save(os.path.normcase(os.path.join(self.g_d, "G_C_"+ str(int(cur_time - self.start_time))+ ".jpg")))
-            #wihtout jpg didnt owrk
-            #png 
-            #change get rid of .jpg ? not owrking on mac
+            im.save(os.path.normcase(os.path.join(self.g_d, "G_C_"+ str(int(cur_time - self.start_time))+ ".pdf")))
         except FileNotFoundError:
             print("Please delete the research folder and try again")
             pass
@@ -176,8 +154,7 @@ class File_Buttons:
         try:
             im = pyautogui.screenshot()
             cur_time = time.time()
-            im.save(os.path.normcase(os.path.join(self.r_d, "R_C_"+ str(int(cur_time - self.start_time))+ ".png")))
-            #just do png if cant figure out how to do jpg transfer on mac
+            im.save(os.path.normcase(os.path.join(self.r_d, "R_C_"+ str(int(cur_time - self.start_time))+ ".pdf")))
         except FileNotFoundError:
             print("Please delete the research folder and try again")
             pass
@@ -196,9 +173,7 @@ class File_Buttons:
 
 
 def main():  
-    
     Start_Screen() 
-    
     
 
 
