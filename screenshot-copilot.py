@@ -143,7 +143,7 @@ class File_Buttons:
             im = pyautogui.screenshot()
             cur_time = time.time()
             #print(cur_time - self.start_time)
-            im.save(os.path.normcase(os.path.join(self.g_d, "G_C_"+ str(int(cur_time - self.start_time))+ ".pdf")))
+            im.save(os.path.normcase(os.path.join(self.g_d, "G_C_"+ str(int(cur_time - self.start_time))+ ".png")))
         except FileNotFoundError:
             print("Please delete the research folder and try again")
             pass
@@ -154,7 +154,7 @@ class File_Buttons:
         try:
             im = pyautogui.screenshot()
             cur_time = time.time()
-            im.save(os.path.normcase(os.path.join(self.r_d, "R_C_"+ str(int(cur_time - self.start_time))+ ".pdf")))
+            im.save(os.path.normcase(os.path.join(self.r_d, "R_C_"+ str(int(cur_time - self.start_time))+ ".png")))
         except FileNotFoundError:
             print("Please delete the research folder and try again")
             pass
